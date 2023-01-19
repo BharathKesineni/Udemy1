@@ -8,7 +8,7 @@ const requestHandler = (req,res) => {
         res.write('<html>');
         res.write('<head><title>Assignment 1</title></head>');
         res.write('</html>');
-        res.write('<body><h1><center>.This is my assignment-1</h1></center><center><form action="/username" method="POST"><input type="text" name="User-Name"></br><button type="submit">Submit</button></form></center></body>'); 
+        res.write('<body><h1>This is Assignment 1</h1><form action="/create-user" method="POST"><input type="text" name="User-Name"><button type="submit">Submit Data</button></form></body>'); 
         return res.end();    
     }
     if (url === '/users') {
@@ -19,7 +19,7 @@ const requestHandler = (req,res) => {
         res.write('</html>');
         return res.end();
     }
-    if (url === "/username" && method === "POST"){
+    if (url === "/create-user" && method === "POST"){
         const body = [];
         req.on("data", (chunk) => {
             console.log(chunk);
@@ -30,8 +30,8 @@ const requestHandler = (req,res) => {
             console.log(parsedBody);
             let user = parsedBody.split("=")[1];
             console.log(user);
-            fs.writeFileSync('dataStore.txt', user, () => {
-                res.statusCode = 305;
+            fs.writeFileSync('user.txt', user, () => {
+                res.statusCode = 302;
                 res.setHeader('Location', '/');
                 res.end();
             });
@@ -40,8 +40,9 @@ const requestHandler = (req,res) => {
     }
     res.setHeader("Conteny-Type","text/html");
     res.write('<html>')
-    res.write('<body><center><h1>Thank you!</h1><h2>Your are successfully submitted.</h2></center></body>')
+    res.write('<body><h1>Hello from Node.js Server</h1></body>')
     res.write('</html>')
     res.end();
 };
-module.exports = requestHandler;
+exports.requestHandler = requestHandler;
+exports.userText = "Exported user text";
